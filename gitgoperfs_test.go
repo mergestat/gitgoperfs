@@ -37,3 +37,30 @@ func BenchmarkGit2GoRevwalk(b *testing.B) {
 		}
 	}
 }
+
+func BenchmarkGoGitRevWalkStats(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		err := GoGitRevWalkStats(repoPath)
+		if err != nil {
+			b.Fatal(err)
+		}
+	}
+}
+
+func BenchmarkGitRevWalkStats(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		err := GitCLIRevWalkStats(repoPath)
+		if err != nil {
+			b.Fatal(err)
+		}
+	}
+}
+
+func BenchmarkGit2GoRevwalkStats(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		err := Git2GoRevWalkStats(repoPath)
+		if err != nil {
+			b.Fatal(err)
+		}
+	}
+}

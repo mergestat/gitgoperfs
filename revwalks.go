@@ -3,18 +3,16 @@ package gitgoperfs
 import (
 	"context"
 
+	gitlog "github.com/augmentable-dev/gitpert/pkg/gitlog"
 	gogit "github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/plumbing/object"
-
-	gitlog "github.com/augmentable-dev/gitpert/pkg/gitlog"
-
 	git2go "github.com/libgit2/git2go/v30"
 )
 
 var (
-	GoGitCommit  *object.Commit
-	GitCLICommit *gitlog.Commit
-	Git2GoCommit *git2go.Commit
+	GoGitCommitRevWalk  *object.Commit
+	GitCLICommitRevWalk *gitlog.Commit
+	Git2GoCommitRevWalk *git2go.Commit
 )
 
 func GoGitRevWalk(repoPath string) error {
@@ -38,7 +36,7 @@ func GoGitRevWalk(repoPath string) error {
 	count := 0
 	iter.ForEach(func(commit *object.Commit) error {
 		count++
-		GoGitCommit = commit
+		GoGitCommitRevWalk = commit
 		return nil
 	})
 
@@ -54,7 +52,7 @@ func GitCLIRevWalk(repoPath string) error {
 	count := 0
 	for _, commit := range res {
 		count++
-		GitCLICommit = commit
+		GitCLICommitRevWalk = commit
 	}
 
 	return nil
@@ -84,8 +82,9 @@ func Git2GoRevWalk(repoPath string) error {
 
 	count := 0
 	revWalk.Iterate(func(commit *git2go.Commit) bool {
+		defer commit.Free()
 		count++
-		Git2GoCommit = commit
+		Git2GoCommitRevWalk = commit
 		return true
 	})
 
