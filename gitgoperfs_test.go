@@ -1,14 +1,23 @@
 package gitgoperfs
 
-import "testing"
+import (
+	"log"
+	"os"
+	"path/filepath"
+	"testing"
+)
 
 var (
 	repoPath string
 )
 
 func init() {
-	// repoPath = "/Users/patrickdevivo/Desktop/linux"
-	repoPath = "/Users/patrickdevivo/Desktop/go-git"
+	repoPath = os.Getenv("GIT_GO_PERFS_TARGET")
+	var err error
+	repoPath, err = filepath.Abs(repoPath)
+	if err != nil {
+		log.Fatal(err)
+	}
 }
 
 func BenchmarkGoGitRevWalk(b *testing.B) {
