@@ -6,7 +6,7 @@ import (
 	gitlog "github.com/augmentable-dev/gitpert/pkg/gitlog"
 	gogit "github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/plumbing/object"
-	git2go "github.com/libgit2/git2go/v30"
+	git2go "github.com/libgit2/git2go/v31"
 )
 
 var (
