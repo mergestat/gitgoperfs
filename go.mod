@@ -2,10 +2,7 @@ module github.com/mergestat/gitgoperfs
 
 go 1.18
 
-require (
-	github.com/augmentable-dev/gitpert v0.0.7
-	github.com/go-git/go-git/v5 v5.4.2
-)
+require github.com/go-git/go-git/v5 v5.4.2
 
 require (
 	github.com/Microsoft/go-winio v0.5.2 // indirect
