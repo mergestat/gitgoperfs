@@ -144,7 +144,6 @@ func Git2GoRevWalkStats(repoPath string) error {
 		}
 
 		defer func() {
-
 			if err = diff.Free(); err != nil {
 				log.Fatal(err)
 			}
