@@ -2,7 +2,8 @@ package gitgoperfs
 
 import (
 	"context"
-	"fmt"
+	"errors"
+	"io"
 	"log"
 
 	gogit "github.com/go-git/go-git/v5"
@@ -61,7 +62,6 @@ func GitCLIRevWalkStats(repoPath string) error {
 	iter, err := gitlog.Exec(context.Background(), repoPath, gitlog.WithStats(true))
 
 	if err != nil {
-		fmt.Println("@hejrer")
 		return err
 	}
 
@@ -69,6 +69,10 @@ func GitCLIRevWalkStats(repoPath string) error {
 
 	for {
 		if commit, err := iter.Next(); err != nil {
+			if errors.Is(err, io.EOF) {
+				break
+			}
+
 			log.Fatal(err)
 		} else {
 			if commit == nil {
