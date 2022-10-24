@@ -30,6 +30,8 @@ func BenchmarkGoGitRevWalk(b *testing.B) {
 }
 
 func BenchmarkGitRevWalk(b *testing.B) {
+	b.Log(repoPath)
+
 	for i := 0; i < b.N; i++ {
 		err := GitCLIRevWalk(repoPath)
 		if err != nil {

@@ -2,11 +2,13 @@ package gitgoperfs
 
 import (
 	"context"
+	"fmt"
+	"log"
 
-	gitlog "github.com/augmentable-dev/gitpert/pkg/gitlog"
 	gogit "github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/plumbing/object"
 	git2go "github.com/libgit2/git2go/v34"
+	gitlog "github.com/mergestat/gitutils/gitlog"
 )
 
 var (
@@ -56,19 +58,32 @@ func GoGitRevWalkStats(repoPath string) error {
 }
 
 func GitCLIRevWalkStats(repoPath string) error {
-	res, err := gitlog.Exec(context.Background(), repoPath, "", nil)
+	iter, err := gitlog.Exec(context.Background(), repoPath, gitlog.WithStats(true))
+
 	if err != nil {
+		fmt.Println("@hejrer")
 		return err
 	}
 
 	count := 0
-	for _, commit := range res {
-		count++
-		for _, s := range commit.Stats {
-			additions += s.Additions
-			deletions += s.Deletions
+
+	for {
+		if commit, err := iter.Next(); err != nil {
+			log.Fatal(err)
+		} else {
+			if commit == nil {
+				break
+			}
+
+			count++
+
+			for _, s := range commit.Stats {
+				additions += s.Additions
+				deletions += s.Deletions
+			}
+
+			GitCLICommitRevWalkStats = commit
 		}
-		GitCLICommitRevWalkStats = commit
 	}
 
 	return nil
