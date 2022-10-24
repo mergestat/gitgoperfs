@@ -75,9 +75,6 @@ func GitCLIRevWalkStats(repoPath string) error {
 
 			log.Fatal(err)
 		} else {
-			if commit == nil {
-				break
-			}
 
 			count++
 
