@@ -9,4 +9,3 @@ vet:
 
 lint:
 	golangci-lint run --build-tags $(TAGS)
-	
