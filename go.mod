@@ -2,10 +2,7 @@ module github.com/mergestat/gitgoperfs
 
 go 1.18
 
-require (
-	github.com/augmentable-dev/gitpert v0.0.7
-	github.com/go-git/go-git/v5 v5.4.2
-)
+require github.com/go-git/go-git/v5 v5.4.2
 
 require (
 	github.com/Microsoft/go-winio v0.5.2 // indirect
@@ -19,6 +16,7 @@ require (
 	github.com/jbenet/go-context v0.0.0-20150711004518-d14ea06fba99 // indirect
 	github.com/kevinburke/ssh_config v1.2.0 // indirect
 	github.com/libgit2/git2go/v34 v34.0.0
+	github.com/mergestat/gitutils v0.0.0-20221018151031-9eedcfea6491
 	github.com/mitchellh/go-homedir v1.1.0 // indirect
 	github.com/sergi/go-diff v1.2.0 // indirect
 	github.com/xanzy/ssh-agent v0.3.2 // indirect
