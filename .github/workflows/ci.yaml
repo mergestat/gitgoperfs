@@ -20,6 +20,3 @@ jobs:
 
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v3
-
-      - name: Upload coverage
-        uses: codecov/codecov-action@v3
