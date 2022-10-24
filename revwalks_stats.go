@@ -39,7 +39,7 @@ func GoGitRevWalkStats(repoPath string) error {
 	}
 
 	count := 0
-	iter.ForEach(func(commit *object.Commit) error {
+	if err := iter.ForEach(func(commit *object.Commit) error {
 		count++
 		stats, err := commit.Stats()
 		if err != nil {
@@ -53,7 +53,9 @@ func GoGitRevWalkStats(repoPath string) error {
 
 		GoGitCommitRevWalkStats = commit
 		return nil
-	})
+	}); err != nil {
+		return err
+	}
 
 	return nil
 }
@@ -109,7 +111,10 @@ func Git2GoRevWalkStats(repoPath string) error {
 	}
 	defer revWalk.Free()
 
-	revWalk.Push(headRef.Target())
+	if err := revWalk.Push(headRef.Target()); err != nil {
+		return err
+	}
+
 	revWalk.Sorting(git2go.SortTime)
 
 	count := 0
@@ -137,13 +142,23 @@ func Git2GoRevWalkStats(repoPath string) error {
 		if err != nil {
 			panic(err)
 		}
-		defer diff.Free()
+
+		defer func() {
+			if err = diff.Free(); err != nil {
+				log.Fatal(err)
+			}
+		}()
 
 		stats, err := diff.Stats()
 		if err != nil {
 			panic(err)
 		}
-		defer stats.Free()
+
+		defer func() {
+			if err := stats.Free(); err != nil {
+				log.Fatal(err)
+			}
+		}()
 
 		additions += stats.Insertions()
 		deletions += stats.Deletions()

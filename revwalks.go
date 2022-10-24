@@ -37,11 +37,13 @@ func GoGitRevWalk(repoPath string) error {
 	}
 
 	count := 0
-	iter.ForEach(func(commit *object.Commit) error {
+	if err := iter.ForEach(func(commit *object.Commit) error {
 		count++
 		GoGitCommitRevWalk = commit
 		return nil
-	})
+	}); err != nil {
+		return err
+	}
 
 	return nil
 }
@@ -92,16 +94,21 @@ func Git2GoRevWalk(repoPath string) error {
 	}
 	defer revWalk.Free()
 
-	revWalk.Push(headRef.Target())
+	if err := revWalk.Push(headRef.Target()); err != nil {
+		return err
+	}
+
 	revWalk.Sorting(git2go.SortTime)
 
 	count := 0
-	revWalk.Iterate(func(commit *git2go.Commit) bool {
+	if err := revWalk.Iterate(func(commit *git2go.Commit) bool {
 		defer commit.Free()
 		count++
 		Git2GoCommitRevWalk = commit
 		return true
-	})
+	}); err != nil {
+		return err
+	}
 
 	return nil
 }
