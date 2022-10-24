@@ -5,7 +5,7 @@ bench:
 	go test . -bench .
 
 vet:
-    go vet -v ./...
-	
+	go vet -v ./...
+
 lint:
-    golangci-lint run
+	golangci-lint run
